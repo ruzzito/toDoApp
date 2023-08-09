@@ -1,0 +1,30 @@
+<ion-content [fullscreen]="true" class="ion-padding ion-align-items-center">
+  <section class="container">
+    <form [formGroup]="formulario">
+      <ion-item>
+        <ion-input formControlName="email" label="E-mail" labelPlacement="stacked" placeholder="Your email"></ion-input>
+      </ion-item>
+      <br>
+      <ion-item>
+        <ion-input formControlName="password" label="Password" labelPlacement="stacked" placeholder="Your password"
+          type="password"></ion-input>
+      </ion-item>
+    </form>
+    <ion-row class="ion-justify-content-center ion-padding-vertical">
+      <ion-text color="primary" routerLink="/recovery">
+        <b>¿Olvidaste tu contraseña?</b>
+      </ion-text>
+      <ion-col size="12">
+        <ion-button expand="block" shape="round" (click)="onSubmit()" [disabled]="formulario.invalid">Iniciar
+          sesión</ion-button>
+      </ion-col>
+      <ion-text color="medium">
+        <p>o también puedes</p>
+      </ion-text>
+      <ion-col size="12">
+        <ion-button expand="block" shape="round" fill="outline" routerLink="/register">Registrarse</ion-button>
+      </ion-col>
+    </ion-row>
+  </section>
+  <ion-toast [isOpen]="isToastOpen" [message]="message" [duration]="5000" (didDismiss)="setOpen(false)"></ion-toast>
+</ion-content>

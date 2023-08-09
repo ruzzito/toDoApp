@@ -6,6 +6,11 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { initializeApp } from "firebase/app";
+import 'firebase/app';
+import { environment } from 'src/environments/environment';
+
+initializeApp(environment.firebaseConfig);
 
 @NgModule({
   declarations: [AppComponent],
