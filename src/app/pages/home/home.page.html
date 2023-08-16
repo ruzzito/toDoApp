@@ -1,6 +1,11 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>home</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="signOut()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Home</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -16,5 +21,39 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-button expand="block" shape="round" (click)="signOut()">Cerrar sesión</ion-button>
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+      <ion-fab-button (click)="setOpen(true)">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <ion-modal [isOpen]="isModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Modal</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="setOpen(false)">Close</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <form [formGroup]="formulario">
+            <ion-item>
+              <ion-input formControlName="title" label="Titulo" labelPlacement="stacked" placeholder="Ingesa el titulo"></ion-input>
+            </ion-item>
+            <br>
+            <ion-item>
+              <ion-textarea formControlName="description" label="Descripción" labelPlacement="stacked" placeholder="Ingrese descripción"></ion-textarea>
+            </ion-item>
+            <br>
+            <ion-item>
+              <ion-input formControlName="date" type="date" label="Fecha" labelPlacement="stacked" placeholder="Ingrese una fecha"></ion-input>
+            </ion-item>
+            <br>        
+            <ion-button expand="block" (click)="onSubmit()">Guardar</ion-button> 
+          </form>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
 </ion-content>

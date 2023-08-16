@@ -4,3 +4,7 @@ export const ERRORS_MESSAGES: any = {
     "auth/too-many-requests": "El acceso a esta cuenta se ha inhabilitado temporalmente debido a muchos intentos fallidos de inicio de sesión. Puede restaurarlo inmediatamente restableciendo su contraseña o puede volver a intentarlo más tarde.",
     "auth/email-already-in-use": "La dirección de correo ya está en uso."
 };
+
+export const COLLECTIONS = {
+    TASKS: 'tasks'
+};
