@@ -10,50 +10,124 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-subtitle>{{ "Hola ! ! !" | uppercase }}</ion-card-subtitle>
-        <ion-card-title>{{ userName | titlecase }}</ion-card-title>
-      </ion-card-header>
-    
-      <ion-card-content>
-        Bienvenid@, acá puedes ver tus tareas más recientes. 
-      </ion-card-content>
-    </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>{{ "Hola ! ! !" | uppercase }}</ion-card-subtitle>
+      <ion-card-title>{{ userName | titlecase }}</ion-card-title>
+    </ion-card-header>
 
-    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-      <ion-fab-button (click)="setOpen(true)">
-        <ion-icon name="add"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
+    <ion-card-content>
+      Bienvenid@, acá puedes ver tus tareas más recientes.
+    </ion-card-content>
+  </ion-card>
 
-    <ion-modal [isOpen]="isModalOpen">
-      <ng-template>
-        <ion-header>
-          <ion-toolbar>
-            <ion-title>Modal</ion-title>
-            <ion-buttons slot="end">
-              <ion-button (click)="setOpen(false)">Close</ion-button>
-            </ion-buttons>
-          </ion-toolbar>
-        </ion-header>
-        <ion-content class="ion-padding">
-          <form [formGroup]="formulario">
-            <ion-item>
-              <ion-input formControlName="title" label="Titulo" labelPlacement="stacked" placeholder="Ingesa el titulo"></ion-input>
-            </ion-item>
-            <br>
-            <ion-item>
-              <ion-textarea formControlName="description" label="Descripción" labelPlacement="stacked" placeholder="Ingrese descripción"></ion-textarea>
-            </ion-item>
-            <br>
-            <ion-item>
-              <ion-input formControlName="date" type="date" label="Fecha" labelPlacement="stacked" placeholder="Ingrese una fecha"></ion-input>
-            </ion-item>
-            <br>        
-            <ion-button expand="block" (click)="onSubmit()">Guardar</ion-button> 
-          </form>
-        </ion-content>
-      </ng-template>
-    </ion-modal>
+  <br>
+  <br>
+  <br>
+
+  <ion-title>Lista de tareas</ion-title>
+  <ion-card *ngFor="let task of tasks">
+    <div class="header-item">
+      <p class="font-standard mb-0">{{ task?.date | date: 'hh:mm a' }}</p>
+      <p class="font-standard mb-0 text-secondary ml-2">
+        {{ task?.date | date: 'EEEE' }}
+      </p>
+    </div>
+    <ion-item-sliding>
+      <ion-item button lines="none">
+        <ion-label class="ml-3 my-4">
+          {{ task?.title }}
+          <p class="m-0 text-secondary">{{ task?.description }}</p>
+        </ion-label>
+        <ion-checkbox
+          #checkbox
+          slot="end"
+          mode="ios"
+          color="success"
+          [checked]="task?.completed"
+        ></ion-checkbox>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger">
+          <ion-buttons>
+            <ion-button>
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item-option>
+        <ion-item-option color="success">
+          <ion-buttons>
+            <ion-button color="light">
+              <ion-icon slot="icon-only" name="pencil"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-card>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="setModalState(true)">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="end">
+            <ion-button (click)="setModalState(false)"
+              ><ion-icon name="arrow-forward-outline"></ion-icon
+            ></ion-button>
+          </ion-buttons>
+          <ion-title>Detalle</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="formulario">
+          <ion-item>
+            <ion-input
+              formControlName="title"
+              label="Titulo"
+              labelPlacement="stacked"
+              placeholder="Ingesa el titulo"
+            ></ion-input>
+          </ion-item>
+          <br />
+          <ion-item>
+            <ion-textarea
+              formControlName="description"
+              label="Descripción"
+              labelPlacement="stacked"
+              placeholder="Ingrese descripción"
+            ></ion-textarea>
+          </ion-item>
+          <br />
+          <ion-item>
+            <ion-input
+              formControlName="date"
+              type="date"
+              label="Fecha"
+              labelPlacement="stacked"
+              placeholder="Ingrese una fecha"
+            ></ion-input>
+          </ion-item>
+          <br />
+          <ion-button
+            expand="block"
+            (click)="onSubmit()"
+            [disabled]="formulario.invalid || isLoading"
+            >Guardar</ion-button
+          >
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  <ion-toast
+    [isOpen]="isToastOpen"
+    [message]="message"
+    [duration]="5000"
+    (didDismiss)="setOpen(false)"
+  ></ion-toast>
 </ion-content>

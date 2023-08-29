@@ -17,25 +17,37 @@ export class HomePage implements OnInit {
   });
   public isModalOpen = false;
 
+  public isLoading = false;
+
+  public message = "";
+  public isToastOpen = false;
+  public tasks: any[] = [];
+
   constructor(private authUser: AuthService, private router: Router, private tasksService: TasksService) { }
   
   ngOnInit() {
-    setTimeout(() => {
-      console.log(this.authUser.user)
-    }, 5000);
+    this.tasksService.getAll().subscribe((data: any) =>{
+      this.tasks = data;
+    }); 
   }
   
   public async onSubmit() {
     if(this.formulario.invalid)return;
+    this.isLoading = true;
     try {
-      const response = await this.tasksService.set(this.formulario.value);
-      console.log("Guardado exitosamente", response);
-    } catch (error) {
-      console.log(error);
+      const message = await this.tasksService.set(this.formulario.value);
+      this.message = message;
+      this.setModalState(false);
+      this.formulario.reset();
+    } catch (message: any) {
+      this.message = message;
+    } finally {
+      this.setOpen(true);
+      this.isLoading = false;
     }
   }
 
-  public setOpen(isOpen: boolean) {
+  public setModalState(isOpen: boolean) {
     this.isModalOpen = isOpen;
   }
 
@@ -50,6 +62,10 @@ export class HomePage implements OnInit {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  public setOpen(state: boolean){
+    this.isToastOpen = state;
   }
 
 }
